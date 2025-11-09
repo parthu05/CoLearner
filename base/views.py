@@ -1,4 +1,5 @@
 from django.shortcuts import render, HttpResponse
+from .models import Room
 
 # Create your views here.
 
@@ -9,13 +10,10 @@ rooms = [
 ]
 
 def home(req):
+    rooms = Room.objects.all()
     return render(req, 'home.html',{'rooms':rooms})
 
 def room(req,pk):
-    room = None
-    for r in rooms:
-        if r["id"] == int(pk):
-            room = r
-            break
+    room = Room.objects.get(id=pk)
     context = {'room':room}
     return render(req, 'room.html',context)
