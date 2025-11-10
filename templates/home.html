@@ -3,9 +3,10 @@
 <p>Your platform for collaborative learning.</p>
 
 <div>
-    <a href="{% url 'create_room'%}">Create Room</a>
+    <a href="{% url 'create_room' %}">Create Room</a>
   <h2>Available Rooms</h2>
   <div>
+    <b><h3>Total Rooms: {{ rooms_count }}</h3></b>
     {% for room in rooms %}
     <div>
         <a href="{% url "room" room.id%}">{{room.id}} . {{ room.name }}</a>
@@ -17,6 +18,17 @@
     </div>
     <br>
     {% endfor %}
+    <div>
+        <h3>Topics</h3>
+        <div>
+            <a href="{% url 'home' %}">All Topics</a><br>
+        </div>
+        <div>
+            {% for topic in topics %}
+            <a href="{% url 'home' %}?q={{topic.name}}">{{topic.name}}</a><br>
+            {% endfor %}
+        </div>
+    </div>
   </div>
 </div>
 

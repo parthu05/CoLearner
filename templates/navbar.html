@@ -1,2 +1,13 @@
-<a href="google.com">Navbar</a>
-<a href="{% url 'home'%}">Home</a>
+<div>
+  <a href="google.com">Navbar</a>
+  <a href="{% url 'home'%}">Home</a>
+  <div>
+    <form action="{% url 'home' %}" method="GET">
+      <input type="text" name="q" placeholder="Search..." />
+      <button type="submit">Search</button>
+    </form>
+  </div>
+  <div>
+    <a href="{% url 'register' %}">Register</a>
+  </div>
+</div>
