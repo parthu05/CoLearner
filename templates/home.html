@@ -3,6 +3,15 @@
 <p>Your platform for collaborative learning.</p>
 
 <div>
+    <div>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
     <a href="{% url 'create_room' %}">Create Room</a>
   <h2>Available Rooms</h2>
   <div>
@@ -13,8 +22,10 @@
         <br>
         <span>@{{room.host}}</span>
         <p><b>Topic</b> :{{room.topic}}</p>
+        {% if request.user == room.host %}
         <a href="{% url "update_room" room.id %}">Update Room</a>
         <a href="{% url "delete_room" room.id %}">Delete Room</a>
+        {% endif %}
     </div>
     <br>
     {% endfor %}
