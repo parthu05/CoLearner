@@ -12,8 +12,8 @@ class RoomForm(ModelForm):
 class RegistrationForm(UserCreationForm):
     username = forms.CharField(max_length=100)
     email = forms.EmailField()
-    password1 = forms.CharField(label='Password')
-    password2 = forms.CharField(label='Confirm Password')
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput)
 
     class Meta:
         model = User
@@ -21,7 +21,7 @@ class RegistrationForm(UserCreationForm):
 
 class LoginForm(AuthenticationForm):
     username = forms.CharField(max_length=100)
-    password = forms.CharField(label='Password')
+    password = forms.CharField(label='Password', widget=forms.PasswordInput)
 
     class Meta:
         model = User

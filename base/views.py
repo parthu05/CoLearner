@@ -3,9 +3,11 @@ from .models import Room,Topic
 from django.db.models import Q
 from .forms import RoomForm, RegistrationForm, LoginForm
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 # Create your views here.
-
+@login_required
 def home(req):
     q = req.GET.get('q') if req.GET.get('q') != None else ''
 
@@ -18,11 +20,13 @@ def home(req):
     context = {'rooms':rooms, 'topics':topics, 'rooms_count':rooms_count}
     return render(req, 'home.html', context)
 
+@login_required
 def room(req,pk):
     room = Room.objects.get(id=pk)
     context = {'room':room}
     return render(req, 'room.html',context)
 
+@login_required
 def createRoom(req):
     form = RoomForm()
     if req.method == 'POST':
@@ -32,6 +36,7 @@ def createRoom(req):
             return redirect('home')
     return render(req, 'room_form.html',{'form':form})
 
+@login_required
 def updateRoom(req,pk):
     room = Room.objects.get(id=pk)
     form = RoomForm(instance=room)
@@ -42,6 +47,7 @@ def updateRoom(req,pk):
             return redirect('home')
     return render(req, 'room_form.html',{'form':form})
 
+@login_required
 def deleteRoom(req,pk):
     room = Room.objects.get(id=pk)
     if req.method == 'POST':
@@ -52,9 +58,29 @@ def deleteRoom(req,pk):
 def registerView(req):
     form = RegistrationForm(req.POST or None)
     if req.method == 'POST':
-        form = RegistrationForm(req.POST)
         if form.is_valid():
             user = form.save()
             login(req,user)
+            messages.success(req, "Registration successful")
             return redirect('home')
+        else:
+            messages.error(req, "Unsuccessful registration. Invalid information.")
     return render(req, 'register.html',{'form':form})
+
+def loginView(req):
+    form = LoginForm(data=req.POST or None)
+    if req.method == "POST":
+        if form.is_valid():
+            user = form.get_user()
+            login(req,user)
+            messages.success(req, "Login successful")
+            return redirect('home')
+        else:
+            messages.error(req, "Invalid username or password")
+    return render(req, 'login.html',{'form':form})
+
+@login_required
+def logoutView(req):
+    logout(req)
+    messages.info(req, "You have successfully logged out.") 
+    return redirect('login')

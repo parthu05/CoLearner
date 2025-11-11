@@ -1,6 +1,5 @@
 <div>
-  <a href="google.com">Navbar</a>
-  <a href="{% url 'home'%}">Home</a>
+  <h1>Navbar</h1>
   <div>
     <form action="{% url 'home' %}" method="GET">
       <input type="text" name="q" placeholder="Search..." />
@@ -8,6 +7,14 @@
     </form>
   </div>
   <div>
+    {% if user.is_authenticated %}
+    <span>Welcome, {{ user.username }}</span>
+    <a href="{% url 'home'%}">Home</a>
+    <a href="{% url 'logout' %}">Logout</a>
+    {% else %}
+    <a href="{% url 'login' %}">Login</a>
     <a href="{% url 'register' %}">Register</a>
+    {% endif %}
   </div>
+  <hr />
 </div>
