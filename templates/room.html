@@ -2,5 +2,31 @@
 <h2>{{room.name}}</h2>
 <h3>Host: @{{room.host}}</h3>
 <p><b>Topic:</b> {{room.topic}}</p>
-
-{% endblock %}
+<div>
+  <h3>Messages</h3>
+  <div>
+    {% for message in room_messages %}
+    <div>
+      <span><b>@{{message.user}}</b></span>
+      <p>{{message.body}}</p>
+      <span><small>{{message.created|timesince}}ago</small></span>
+    </div>
+    <br />
+    {% endfor %}
+  </div>
+  {% if request.user.is_authenticated %}
+  <div>
+    <form method="POST">
+      {% csrf_token %}
+      <textarea
+        name="body"
+        rows="2"
+        cols="50"
+        placeholder="Enter your message here..."
+      ></textarea
+      ><br />
+      <button type="submit">Send</button>
+    </form>
+  </div>
+  {%endif%} {% endblock %}
+</div>
