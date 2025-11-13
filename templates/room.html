@@ -3,30 +3,42 @@
 <h3>Host: @{{room.host}}</h3>
 <p><b>Topic:</b> {{room.topic}}</p>
 <div>
-  <h3>Messages</h3>
   <div>
-    {% for message in room_messages %}
+    <h3>Messages</h3>
     <div>
-      <span><b>@{{message.user}}</b></span>
-      <p>{{message.body}}</p>
-      <span><small>{{message.created|timesince}}ago</small></span>
+      {% for message in room_messages %}
+      <div>
+        <span><b>@{{message.user}}</b></span>
+        <p>{{message.body}}</p>
+        <span><small>{{message.created|timesince}}ago</small></span>
+      </div>
+      <br />
+      {% endfor %}
     </div>
-    <br />
-    {% endfor %}
+    {% if request.user.is_authenticated %}
+    <div>
+      <form method="POST">
+        {% csrf_token %}
+        <textarea
+          name="body"
+          rows="2"
+          cols="50"
+          placeholder="Enter your message here..."
+        ></textarea
+        ><br />
+        <button type="submit">Send</button>
+      </form>
+    </div>
+    {%endif%}
   </div>
-  {% if request.user.is_authenticated %}
   <div>
-    <form method="POST">
-      {% csrf_token %}
-      <textarea
-        name="body"
-        rows="2"
-        cols="50"
-        placeholder="Enter your message here..."
-      ></textarea
-      ><br />
-      <button type="submit">Send</button>
-    </form>
+    <h3>Participants</h3>
+    <ul>
+      {% for participant in participants %}
+      <li>@{{participant.username}}</li>
+      {% endfor %}
+    </ul>
   </div>
-  {%endif%} {% endblock %}
 </div>
+
+{% endblock %}

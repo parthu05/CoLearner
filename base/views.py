@@ -25,14 +25,17 @@ def home(req):
 def room(req,pk):
     room = Room.objects.get(id=pk)
     room_messages = room.message_set.all().order_by('created')
+    participants = room.participants.all()
     if req.method == 'POST':
         message = Message.objects.create(
             user = req.user,
             room = room,
             body = req.POST.get('body')
         )
+        room.participants.add(req.user)
+        print(room.participants.all())
         return redirect('room', pk=room.id)
-    context = {'room':room, 'room_messages':room_messages}
+    context = {'room':room, 'room_messages':room_messages, 'participants':participants}
     return render(req, 'room.html',context)
 
 @login_required(login_url='login')
