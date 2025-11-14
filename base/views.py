@@ -48,12 +48,30 @@ def UserProfile(req,pk):
 @login_required(login_url='login')
 def createRoom(req):
     form = RoomForm()
+    topics = Topic.objects.all()
     if req.method == 'POST':
+
+        # Old way without using forms(make this code better with forms)
+
+        #topic_name = req.POST.get('topic')
+        #topic, created = Topic.objects.get_or_create(name=topic_name)
+        #Room.objects.create(
+        #    host = req.user,
+        #    topic = topic,
+        #    name = req.POST.get('name'),
+        #    description = req.POST.get('description')
+        #)
+        #return redirect('home')
+
+
         form = RoomForm(req.POST)
         if form.is_valid():
-            form.save()
+            room = form.save(commit=False)
+            room.host = req.user
+            room.save()
             return redirect('home')
-    return render(req, 'room_form.html',{'form':form})
+    context = {'form':form, 'topics':topics}
+    return render(req, 'room_form.html',context)
 
 @login_required(login_url='login')
 def updateRoom(req,pk):
