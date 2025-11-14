@@ -20,7 +20,7 @@
     <div>
         <a href="{% url "room" room.id%}">{{room.id}} . {{ room.name }}</a>
         <br>
-        <span>@{{room.host}}</span>
+        <a href="{% url "profile" user.id %}">@{{room.host}}</a>
         <p><b>Topic</b> :{{room.topic}}</p>
         {% if request.user == room.host %}
         <a href="{% url "update_room" room.id %}">Update Room</a>

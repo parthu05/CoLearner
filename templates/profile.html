@@ -1,0 +1,35 @@
+{% extends 'base.html' %} {% block content %}
+
+<h3>{{ user.username }}'s Profile</h3>
+{% if user.profile.bio %}
+<p>Bio: {{ user.profile.bio }}</p>
+{% else %}
+<p>No bio available.</p>
+{% endif %}
+<p><strong>Email: </strong>{{ user.email }}</p>
+<strong></strong>
+<p><strong>Joined on: </strong>{{ user.date_joined|date:"F j, Y" }}</p>
+<div>
+  <h2>Rooms joined</h2>
+  {% if rooms %}
+  <ul>
+    {% for room in rooms %}
+    <li><a href="{% url 'room' room.id%}">{{ room.name }}</a></li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p>No rooms joined yet.</p>
+  {% endif %}
+</div>
+<div>
+  <h2>Recent activity</h2>
+  {% if messages %} {% for message in messages %}
+  <div>
+    <a href={% url "room" message.room.id %}>{{message.room}}</a><br />
+    <p>{{ message.body }}</p>
+  </div>
+  {% endfor %} {% else %}
+  <p>No recent activity.</p>
+  {% endif %}
+</div>
+{% endblock %}

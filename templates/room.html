@@ -8,7 +8,7 @@
     <div>
       {% for message in room_messages %}
       <div>
-        <span><b>@{{message.user}}</b></span>
+        <a href="{% url "profile" room.host.id %}">@{{message.user}}</a>
         <p>{{message.body}}</p>
         <span><small>{{message.created|timesince}}ago</small></span>
       </div>

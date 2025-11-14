@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Room,Topic,Message
+from .models import Room,Topic,Message,User
 from django.http import HttpResponse
 from django.db.models import Q
 from .forms import RoomForm, RegistrationForm, LoginForm
@@ -37,6 +37,13 @@ def room(req,pk):
         return redirect('room', pk=room.id)
     context = {'room':room, 'room_messages':room_messages, 'participants':participants}
     return render(req, 'room.html',context)
+
+def UserProfile(req,pk):
+    user = User.objects.get(id=pk)
+    room = user.room_set.all()
+    messages = Message.objects.filter(user=user)
+    context = {'user':user,'rooms':room, 'messages':messages}
+    return render(req, 'profile.html',context)
 
 @login_required(login_url='login')
 def createRoom(req):
