@@ -1,7 +1,71 @@
-{%extends 'base.html'%} {%block content%}
-<h2>Login</h2>
-<form method="POST">
-  {% csrf_token %} {{ form.as_p }}
-  <button type="submit">Login</button>
-</form>
-{%endblock%}
+{% extends 'base.html' %} {% block content %}
+<div class="container-fluid p-0 m-0">
+  <div
+    class="d-flex justify-content-center align-items-center"
+    style="min-height: calc(100vh - 70px)"
+  >
+    <div
+      class="card shadow p-4"
+      style="
+        width: 23rem;
+        border: none;
+        border-radius: 10px;
+        background-color: #eaebedff;
+      "
+    >
+      <h2 class="text-center mb-4" style="font-weight: bold; color: #2c2b2b">
+        Welcome Back!
+      </h2>
+      <p
+        class="text-center small mb-3 mx-4"
+        style="color: #423e3e; margin-top: -12px"
+      >
+        Sign in to connect with your communities and friends
+      </p>
+      <br />
+      <form method="POST">
+        {% csrf_token %} {% if form.non_field_errors %}
+        <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <input
+            type="text"
+            class="form-control{% if form.username.errors %} is-invalid{% endif %}"
+            name="username"
+            value="{{ form.username.value|default_if_none:'' }}"
+            placeholder="Enter your username"
+            required
+          />
+          {% if form.username.errors %}
+          <div class="invalid-feedback">{{ form.username.errors }}</div>
+          {% endif %}
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-control{% if form.password.errors %} is-invalid{% endif %}"
+            name="password"
+            placeholder="••••••••"
+            required
+          />
+          {% if form.password.errors %}
+          <div class="invalid-feedback">{{ form.password.errors }}</div>
+          {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 mt-2">Login</button>
+      </form>
+      <p
+        class="text-center small mb-3 mx-4"
+        style="color: #423e3e; margin-top: 30px"
+      >
+        Dont have and account? <a href="{% url 'register' %}">Register here</a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

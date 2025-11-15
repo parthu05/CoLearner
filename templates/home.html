@@ -3,15 +3,6 @@
 <p>Your platform for collaborative learning.</p>
 
 <div>
-    <div>
-        {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-    </div>
     <a href="{% url 'create_room' %}">Create Room</a>
   <h2>Available Rooms</h2>
   <div>

@@ -1,8 +1,98 @@
-{% extends "base.html" %} {% block content %}
+{% extends 'base.html' %} {% block content %}
+<div class="container-fluid p-0 m-0">
+  <div
+    class="d-flex justify-content-center align-items-center"
+    style="min-height: calc(100vh - 80px)"
+  >
+    <div
+      class="card shadow p-4"
+      style="
+        width: 30rem;
+        border: none;
+        border-radius: 10px;
+        background-color: #eaebedff;
+      "
+    >
+      <h2 class="text-center" style="font-weight: bold; color: #2c2b2b">
+        Create your Account
+      </h2>
+      <p class="text-center small mx-4" style="color: #423e3e; margin-top: 4px">
+        Join Colearner today and start connecting with communities!
+      </p>
+      <br />
+      <form method="POST">
+        {% csrf_token %} {% if form.non_field_errors %}
+        <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+        {% endif %}
 
-<h2>Register</h2>
-<form method="POST">
-  {% csrf_token %} {{ form.as_p }}
-  <button type="submit">Register</button>
-</form>
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <input
+            type="text"
+            class="form-control{% if form.username.errors %} is-invalid{% endif %}"
+            name="username"
+            value="{{ form.username.value|default_if_none:'' }}"
+            placeholder="Enter your username"
+            required
+          />
+          {% if form.username.errors %}
+          <div class="invalid-feedback">{{ form.username.errors }}</div>
+          {% endif %}
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input
+            type="email"
+            class="form-control{% if form.email.errors %} is-invalid{% endif %}"
+            name="email"
+            value="{{ form.email.value|default_if_none:'' }}"
+            placeholder="your@gmail.com"
+            aria-describedby="emailHelp"
+            required
+          />
+          {% if form.email.errors %}
+          <div class="invalid-feedback">{{ form.email.errors }}</div>
+          {% endif %}
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-control{% if form.password1.errors %} is-invalid{% endif %}"
+            name="password1"
+            placeholder="Create password"
+            required
+          />
+          {% if form.password1.errors %}
+          <div class="invalid-feedback">{{ form.password1.errors }}</div>
+          {% endif %}
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Confirm Password</label>
+          <input
+            type="password"
+            class="form-control{% if form.password2.errors %} is-invalid{% endif %}"
+            name="password2"
+            placeholder="Re-enter password"
+            required
+          />
+          {% if form.password2.errors %}
+          <div class="invalid-feedback">{{ form.password2.errors }}</div>
+          {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Register</button>
+      </form>
+      <p
+        class="text-center small mb-3 mx-4"
+        style="color: #423e3e; margin-top: 20px"
+      >
+        Already have an account? <a href="{% url 'login' %}">Login</a>
+      </p>
+    </div>
+  </div>
+</div>
 {% endblock %}
