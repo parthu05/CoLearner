@@ -2,34 +2,132 @@
 <h1>Welcome to Colearner</h1>
 <p>Your platform for collaborative learning.</p>
 
-<div>
-    <a href="{% url 'create_room' %}">Create Room</a>
-  <h2>Available Rooms</h2>
-  <div>
-    <b><h3>Total Rooms: {{ rooms_count }}</h3></b>
-    {% for room in rooms %}
-    <div>
-        <a href="{% url "room" room.id%}">{{room.id}} . {{ room.name }}</a>
-        <br>
-        <a href="{% url "profile" user.id %}">@{{room.host}}</a>
-        <p><b>Topic</b> :{{room.topic}}</p>
-        {% if request.user == room.host %}
-        <a href="{% url "update_room" room.id %}">Update Room</a>
-        <a href="{% url "delete_room" room.id %}">Delete Room</a>
-        {% endif %}
+<button
+  class="btn btn-primary"
+  data-bs-toggle="modal"
+  data-bs-target="#createRoomModal"
+>
+  Create Room
+</button>
+
+<div
+  class="modal fade"
+  id="createRoomModal"
+  tabindex="-1"
+  aria-labelledby="createRoomLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createRoomLabel">Create Room</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <form method="POST" action="{% url 'home' %}">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="roomName" class="form-label">Room Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="roomName"
+              name="name"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="roomTopic" class="form-label">Topic</label>
+            <input
+              list="topics"
+              class="form-control"
+              id="roomTopic"
+              name="topic"
+              placeholder="Select or enter a topic"
+              required
+            />
+            <datalist id="topics">
+              <select class="form-select" aria-label="Default select example">
+                <option selected>No topic</option>
+                {% for topic in topics %}
+                <option>{{topic}}</option>
+                {% endfor %}
+              </select>
+            </datalist>
+          </div>
+          <div class="mb-3">
+            <label for="roomDescription" class="form-label">Description</label>
+            <textarea
+              class="form-control"
+              id="roomDescription"
+              name="description"
+              rows="3"
+              required
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </form>
     </div>
-    <br>
-    {% endfor %}
-    <div>
-        <h3>Topics</h3>
-        <div>
-            <a href="{% url 'home' %}">All Topics</a><br>
-        </div>
-        <div>
-            {% for topic in topics %}
-            <a href="{% url 'home' %}?q={{topic.name}}">{{topic.name}}</a><br>
-            {% endfor %}
-        </div>
+  </div>
+</div>
+
+<h2 class="mt-4">Available Rooms</h2>
+<div>
+  <h3>Total Rooms: {{ rooms_count }}</h3>
+
+  {% if rooms %} {% for room in rooms %}
+  <div class="mb-3 p-2 border rounded">
+    <a href="{% url 'room' room.id %}">{{ room.id }}. {{ room.name }}</a>
+    <br />
+    <a href="{% url 'profile' room.host.id %}">@{{ room.host.username }}</a>
+    <p><strong>Topic</strong>: {{ room.topic }}</p>
+
+    {% if user == room.host %}
+    <a href="{% url 'update_room' room.id %}">Update Room</a>
+    <a href="{% url 'delete_room' room.id %}">Delete Room</a>
+    {% endif %}
+  </div>
+  {% endfor %} {% else %}
+  <p>
+    No rooms yet. Be the first to
+    <button
+      class="btn btn-link p-0"
+      data-bs-toggle="modal"
+      data-bs-target="#createRoomModal"
+    >
+      create one</button
+    >.
+  </p>
+  {% endif %}
+
+  <div class="mt-4">
+    <h3>Topics</h3>
+    <div><a href="{% url 'home' %}">All Topics</a></div>
+    <div class="mt-2">
+      {% if topics %} {% for topic in topics %}
+      <a href="{% url 'home' %}?q={{ topic.name|urlencode }}"
+        >{{ topic.name }}</a
+      ><br />
+      {% endfor %} {% else %}
+      <p>No topics yet.</p>
+      {% endif %}
     </div>
   </div>
 </div>
