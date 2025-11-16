@@ -42,18 +42,16 @@
           >
         </li>
         <li class="nav-item">
-          <form class="d-flex mx-4" method="get" action="{% url 'home' %}">
+          <form class="d-flex ms-5" method="get" action="{% url 'home' %}">
             <input
               class="form-control me-2"
               type="search"
               name="q"
               placeholder="Search"
               aria-label="Search"
+              style="width: 400px"
               value="{{ request.GET.q|default:'' }}"
             />
-            <button class="btn btn-outline-primary" type="submit">
-              Search
-            </button>
           </form>
         </li>
         {% endif %}

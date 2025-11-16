@@ -15,7 +15,6 @@ def home(req):
     rooms = Room.objects.filter(
         Q(name__icontains=q) | Q(topic__name__icontains=q) | Q(description__icontains=q) | Q(host__username__icontains=q)
     )
-    form = RoomForm()
     topics = Topic.objects.all()
     rooms_count = rooms.count()
     if req.method == 'POST':
