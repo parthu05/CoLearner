@@ -14,37 +14,49 @@
         <p>No topics yet.</p>
         {% endif %}
       </div>
-      <!-- You can add more sidebar content here -->
     </div>
 
     <!-- Main Content -->
-    <div class="col-md-5 mx-auto">
+    <div class="col-md-6 mx-auto px-3">
       {% include "room_form.html" %}
-      <h2 class="mt-4">Available Rooms</h2>
+      <h4 class="mt-4">Explore Available Rooms</h4>
+      <p>Join a room to start chatting</p>
       <h3>Total Rooms: {{ rooms_count }}</h3>
-      {% if rooms %} {% for room in rooms %}
-      <div class="mb-3 p-2 border rounded">
-        <a href="{% url 'room' room.id %}">{{ room.id }}. {{ room.name }}</a
-        ><br />
-        <a href="{% url 'profile' room.host.id %}">@{{ room.host.username }}</a>
-        <p><strong>Topic</strong>: {{ room.topic }}</p>
-        {% if user == room.host %}
-        <a href="{% url 'update_room' room.id %}">Update Room</a>
-        <a href="{% url 'delete_room' room.id %}">Delete Room</a>
+      <!-- filepath: d:\codes\coLearner\templates\home.html -->
+      <div class="row">
+        {% if rooms %} {% for room in rooms %}
+        <div class="col-md-6 mb-3">
+          <div
+            class="p-2 border rounded h-100 border-secondary border-opacity-25"
+          >
+            <a href="{% url 'room' room.id %}">{{ room.id }}. {{ room.name }}</a
+            ><br />
+            <a href="{% url 'profile' room.host.id %}"
+              >@{{ room.host.username }}</a
+            >
+            <p><strong>Topic</strong>: {{ room.topic }}</p>
+            {% if user == room.host %}
+            <a href="{% url 'update_room' room.id %}">Update Room</a>
+            <a href="{% url 'delete_room' room.id %}">Delete Room</a>
+            {% endif %}
+          </div>
+        </div>
+        {% if forloop.counter|divisibleby:2 %}
+      </div>
+      <div class="row">
+        {% endif %} {% endfor %} {% else %}
+        <p>
+          No rooms yet. Be the first to
+          <button
+            class="btn btn-link p-0"
+            data-bs-toggle="modal"
+            data-bs-target="#createRoomModal"
+          >
+            create one</button
+          >.
+        </p>
         {% endif %}
       </div>
-      {% endfor %} {% else %}
-      <p>
-        No rooms yet. Be the first to
-        <button
-          class="btn btn-link p-0"
-          data-bs-toggle="modal"
-          data-bs-target="#createRoomModal"
-        >
-          create one</button
-        >.
-      </p>
-      {% endif %}
     </div>
 
     <!-- Right Sidebar (Empty for now) -->
