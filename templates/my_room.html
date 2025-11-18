@@ -12,7 +12,9 @@
         <h5>{{room.name}}</h5>
         <span class="badge text-bg-primary mb-4">{{room.topic}}</span>
         <a href="{% url 'room' room.id %}" class="stretched-link"></a>
-        <p>{{ room.description }}</p>
+        <p class="text-start small text-muted">
+          {{ room.description|truncatewords:15 }}
+        </p>
         {% if user == room.host %}
         <a href="{% url 'update_room' room.id %}" class="btn btn-primary btn-sm"
           >Update Room</a
