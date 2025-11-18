@@ -25,20 +25,29 @@
       <!-- filepath: d:\codes\coLearner\templates\home.html -->
       <div class="row">
         {% if rooms %} {% for room in rooms %}
+        <!-- filepath: d:\codes\coLearner\templates\home.html -->
         <div class="col-md-6 mb-3">
           <div
-            class="p-2 border rounded h-100 border-secondary border-opacity-25"
+            class="d-flex flex-column justify-content-between p-4 border rounded h-100 border-secondary border-opacity-25"
+            style="min-height: 220px"
           >
-            <a href="{% url 'room' room.id %}">{{ room.id }}. {{ room.name }}</a
-            ><br />
-            <a href="{% url 'profile' room.host.id %}"
-              >@{{ room.host.username }}</a
-            >
-            <p><strong>Topic</strong>: {{ room.topic }}</p>
-            {% if user == room.host %}
-            <a href="{% url 'update_room' room.id %}">Update Room</a>
-            <a href="{% url 'delete_room' room.id %}">Delete Room</a>
-            {% endif %}
+            <div class="position-relative">
+              <h5>{{room.name}}</h5>
+              <a href="{% url 'room' room.id %}" class="stretched-link"></a
+              ><br />
+              <p>{{ room.description }}</p>
+              <p><strong>Topic</strong>: {{ room.topic }}</p>
+              {% if user == room.host %}
+              <a href="{% url 'update_room' room.id %}">Update Room</a>
+              <a href="{% url 'delete_room' room.id %}">Delete Room</a>
+              {% endif %}
+            </div>
+            <div class="text-start small text-muted">
+              Created by -
+              <a href="{% url 'profile' room.host.id %}"
+                >@{{ room.host.username }}</a
+              >
+            </div>
           </div>
         </div>
         {% if forloop.counter|divisibleby:2 %}
