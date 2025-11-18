@@ -10,4 +10,5 @@ urlpatterns = [
     path('login',views.loginView,name="login"),
     path('logout',views.logoutView,name="logout"),
     path('profile/<int:pk>',views.UserProfile,name="profile"),
+    path('myrooms/', views.Myrooms, name='myrooms'),
 ]

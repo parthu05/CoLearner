@@ -47,6 +47,12 @@ def room(req,pk):
     context = {'room':room, 'room_messages':room_messages, 'participants':participants}
     return render(req, 'room.html',context)
 
+def Myrooms(req):
+    rooms = req.user.room_set.all()
+    context = {'rooms':rooms}
+    return render(req, 'my_room.html',context)
+
+@login_required(login_url='login')
 def UserProfile(req,pk):
     user = User.objects.get(id=pk)
     room = user.room_set.all()

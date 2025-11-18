@@ -1,0 +1,40 @@
+{% extends "base.html" %} {% block content %}
+<h2>My Rooms</h2>
+
+<div class="row">
+  {% if rooms %} {% for room in rooms %}
+  <div class="col-md-6 mb-3 position-relative">
+    <div
+      class="d-flex flex-column justify-content-between p-4 border rounded h-100 border-secondary border-opacity-25 bg-light"
+      style="min-height: 220px"
+    >
+      <div class="position-relative">
+        <h5>{{room.name}}</h5>
+        <span class="badge text-bg-primary mb-4">{{room.topic}}</span>
+        <a href="{% url 'room' room.id %}" class="stretched-link"></a>
+        <p>{{ room.description }}</p>
+        {% if user == room.host %}
+        <a href="{% url 'update_room' room.id %}" class="btn btn-primary btn-sm"
+          >Update Room</a
+        >
+        <a
+          href="{% url 'delete_room' room.id %}"
+          class="btn btn-secondary btn-sm"
+          >Delete Room</a
+        >
+        {% endif %}
+      </div>
+      <div class="text-start small text-muted">
+        Created by -
+        <a href="{% url 'profile' room.host.id %}">@{{ room.host.username }}</a>
+      </div>
+    </div>
+  </div>
+  {% if forloop.counter|divisibleby:2 %}
+</div>
+<div class="row">
+  {% endif %} {% endfor %} {% else %}
+  <p>You have not created any rooms yet.</p>
+  {% endif %}
+</div>
+{% endblock %}
