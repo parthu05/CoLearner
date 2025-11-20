@@ -1,35 +1,71 @@
-{% extends 'base.html' %} {% block content %}
+<!-- filepath: d:\codes\coLearner\templates\profile.html -->
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow mb-4">
+        <div class="card-body">
+          <div class="d-flex align-items-center mb-3">
+            <div>
+              <h3 class="mb-0">{{ user.username }}</h3>
+              <p class="text-muted mb-0">Joined on: {{ user.date_joined|date:"F j, Y" }}</p>
+            </div>
+          </div>
+          <hr>
+          <p>
+            <strong>Email:</strong>
+            <span class="text-primary">{{ user.email }}</span>
+          </p>
+          <p>
+            <strong>Bio:</strong>
+            {% if user.profile.bio %}
+              {{ user.profile.bio }}
+            {% else %}
+              <span class="text-muted">No bio available.</span>
+            {% endif %}
+          </p>
+        </div>
+      </div>
 
-<h3>{{ user.username }}'s Profile</h3>
-{% if user.profile.bio %}
-<p>Bio: {{ user.profile.bio }}</p>
-{% else %}
-<p>No bio available.</p>
-{% endif %}
-<p><strong>Email: </strong>{{ user.email }}</p>
-<strong></strong>
-<p><strong>Joined on: </strong>{{ user.date_joined|date:"F j, Y" }}</p>
-<div>
-  <h2>Rooms joined</h2>
-  {% if rooms %}
-  <ul>
-    {% for room in rooms %}
-    <li><a href="{% url 'room' room.id%}">{{ room.name }}</a></li>
-    {% endfor %}
-  </ul>
-  {% else %}
-  <p>No rooms joined yet.</p>
-  {% endif %}
-</div>
-<div>
-  <h2>Recent activity</h2>
-  {% if messages %} {% for message in messages %}
-  <div>
-    <a href={% url "room" message.room.id %}>{{message.room}}</a><br />
-    <p>{{ message.body }}</p>
+      <div class="card mb-4">
+        <div class="card-header bg-light">
+          <h5 class="mb-0">Rooms Joined</h5>
+        </div>
+        <div class="card-body">
+          {% if rooms %}
+            <ul class="list-group list-group-flush">
+              {% for room in rooms %}
+                <li class="list-group-item">
+                  <a href="{% url 'room' room.id %}" class="text-decoration-none fw-semibold">{{ room.name }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="text-muted">No rooms joined yet.</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header bg-light">
+          <h5 class="mb-0">Recent Activity</h5>
+        </div>
+        <div class="card-body">
+          {% if messages %}
+            {% for message in messages %}
+              <div class="mb-3">
+                <a href="{% url 'room' message.room.id %}" class="fw-semibold text-primary text-decoration-none">{{ message.room }}</a><br />
+                <p class="mb-1">{{ message.body }}</p>
+              </div>
+            {% endfor %}
+          {% else %}
+            <p class="text-muted">No recent activity.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
   </div>
-  {% endfor %} {% else %}
-  <p>No recent activity.</p>
-  {% endif %}
 </div>
 {% endblock %}
