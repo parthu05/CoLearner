@@ -17,6 +17,7 @@ def home(req):
     )
     topics = Topic.objects.all()
     rooms_count = rooms.count()
+    room_messages = Message.objects.all().order_by('-created')[0:7]
     if req.method == 'POST':
         topic_name = req.POST.get('topic')
         topic, created = Topic.objects.get_or_create(name=topic_name)
@@ -27,7 +28,7 @@ def home(req):
             description = req.POST.get('description')
         )
         return redirect('home')
-    context = {'rooms':rooms, 'topics':topics, 'rooms_count':rooms_count}
+    context = {'rooms':rooms, 'topics':topics, 'rooms_count':rooms_count, 'room_messages':room_messages}
     return render(req, 'home.html', context)
 
 @login_required(login_url='login')
